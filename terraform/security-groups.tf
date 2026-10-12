@@ -80,3 +80,49 @@ resource "aws_security_group" "backend" {
     Name = "${var.project_name}-backend-sg"
   }
 }
+
+# -----------------------------------
+# Database Security Group
+# -----------------------------------
+
+resource "aws_security_group" "database" {
+  name        = "${var.project_name}-database-sg"
+  description = "PostgreSQL database"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description     = "PostgreSQL from Worker"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.backend.id]
+  }
+
+  ingress {
+    description     = "PostgreSQL from Result"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.frontend.id]
+  }
+
+  ingress {
+    description     = "SSH from Bastion"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.frontend.id]
+  }
+
+  egress {
+    description = "Allow outbound connections"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project_name}-database-sg"
+  }
+}
