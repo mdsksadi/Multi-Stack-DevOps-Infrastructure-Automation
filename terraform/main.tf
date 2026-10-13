@@ -155,3 +155,19 @@ resource "aws_route" "private_nat" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.main.id
 }
+
+resource "aws_subnet" "frontend_public" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = "us-east-1d"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.project_name}-frontend-public-subnet"
+  }
+}
+
+resource "aws_route_table_association" "frontend_public" {
+  subnet_id      = aws_subnet.frontend_public.id
+  route_table_id = aws_route_table.public.id
+}
