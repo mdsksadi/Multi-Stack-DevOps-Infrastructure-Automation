@@ -29,3 +29,14 @@ variable "my_ip" {
   description = "My public IPv4 address with /32"
   type        = string
 }
+
+variable "ubuntu_ami" {
+  description = "Ubuntu 24.04 LTS AMI ID"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
