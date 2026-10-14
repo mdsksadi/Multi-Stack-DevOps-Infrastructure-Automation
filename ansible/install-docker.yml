@@ -1,0 +1,32 @@
+
+---
+- name: Install and start Docker on all EC2 instances
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update apt package index
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Verify Docker installation
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Display Docker version
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}: {{ docker_version.stdout }}"
+
