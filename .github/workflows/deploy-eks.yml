@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@e468171a9de216ec08956ac3ada2f0791b6bd435
+        uses: actions/checkout@v4
 
       - name: Configure Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
@@ -67,7 +67,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/worker:latest
 
       - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@e468171a9de216ec08956ac3ada2f0791b6bd435
         with:
           role-to-assume: arn:aws:iam::686699774218:role/GitHubActionsEKSDeploy
           aws-region: ${{ env.AWS_REGION }}
