@@ -5,3 +5,5 @@
 crash.log
 override.tf
 override.tf.json
+# Kubernetes local secrets
+k8s/postgres-secret.yaml
